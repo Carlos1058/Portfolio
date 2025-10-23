@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   loadEducation();
   loadCertifications();
+  loadCourses(); // <-- Movido aquí
 
   // -------------------------------
   // 3. Cursor personalizado
@@ -61,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const chatSend = document.getElementById("chat-send");
 
   // URL de tu Backend.
-  // En este caso, usamos el backend desplegado en Render.com
   const CHAT_API_URL = "https://portfolio-backend-t6dn.onrender.com/chat";
 
   if (
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function addMessageToChat(sender, text) {
       const messageElement = document.createElement("div");
       messageElement.classList.add("chat-message", sender);
-      messageElement.innerHTML = `<p>${text}</p>`; // Usamos innerHTML para renderizar saltos de línea si los hubiera
+      messageElement.innerHTML = `<p>${text}</p>`;
       chatBody.appendChild(messageElement);
       // Auto-scroll al final
       chatBody.scrollTop = chatBody.scrollHeight;
@@ -150,10 +150,85 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
-}); // <-- Esta es la llave de cierre del DOMContentLoaded.
+
+  // -------------------------------
+  // 5. Tema oscuro/claro (¡MOVIDO AQUÍ DENTRO!)
+  // -------------------------------
+  const themeToggle = document.getElementById("theme-toggle");
+  const currentTheme = localStorage.getItem("theme") || "light";
+
+  // Aplica el tema guardado al cargar la página
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  updateIcon();
+
+  // Alternar tema al hacer clic
+  themeToggle.addEventListener("click", () => {
+    const newTheme =
+      document.documentElement.getAttribute("data-theme") === "light"
+        ? "dark"
+        : "light";
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    updateIcon();
+  });
+
+  // Actualizar icono según el tema
+  function updateIcon() {
+    const isDark =
+      document.documentElement.getAttribute("data-theme") === "dark";
+    themeToggle.innerHTML = isDark
+      ? '<i class="fas fa-sun"></i>'
+      : '<i class="fas fa-moon"></i>';
+    themeToggle.setAttribute(
+      "aria-label",
+      isDark ? "Cambiar a tema claro" : "Cambiar a tema oscuro"
+    );
+  }
+
+  // -------------------------------
+  // 6. Contact Form Handling (¡MOVIDO AQUÍ DENTRO!)
+  // -------------------------------
+  document
+    .getElementById("contactForm")
+    ?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      // Feedback visual
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+
+        if (response.ok) {
+          // Redirección manual (como respaldo)
+          window.location.href = form.querySelector(
+            'input[name="_next"]'
+          ).value;
+        } else {
+          throw new Error("Form submission failed");
+        }
+      } catch (error) {
+        // Mensaje de error si falla la redirección
+        const errorMsg = document.createElement("p");
+        errorMsg.className = "form-error";
+        errorMsg.innerHTML = "⚠️ Error sending message. Please try again.";
+        form.appendChild(errorMsg);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = "Send Message";
+      }
+    });
+}); // <-- ESTA ES LA ÚNICA LLAVE QUE CIERRA EL DOMContentLoaded
 
 // =============================================
-// FUNCIONES PRINCIPALES
+// DEFINICIÓN DE FUNCIONES (Van afuera del listener)
 // =============================================
 
 // -------------------------------
@@ -424,7 +499,9 @@ function addHoverEffect() {
     });
 }
 
-// ▼▼▼ MODIFICACIÓN AQUÍ ▼▼▼
+// -------------------------------
+// CURSOS (Dropdown)
+// -------------------------------
 async function loadCourses() {
   try {
     const response = await fetch("courses.json");
@@ -456,21 +533,21 @@ async function loadCourses() {
     // 1. Añadir la opción "All"
     const allOption = document.createElement("option");
     allOption.value = "all";
-    allOption.textContent = "All"; // El contador se añadirá después
+    allOption.textContent = "All";
     filterSelect.appendChild(allOption);
 
     // 2. Añadir opciones para cada semestre
     semesters.forEach((semester) => {
       const option = document.createElement("option");
       option.value = semester.id;
-      option.textContent = semester.text; // El contador se añadirá después
+      option.textContent = semester.text;
       filterSelect.appendChild(option);
     });
 
     // Actualizar contadores en el dropdown
     updateCourseCounts(courses, semesters);
 
-    // Renderizar todas las tarjetas de cursos (estarán ocultas por el filtro inicial)
+    // Renderizar todas las tarjetas de cursos
     container.innerHTML = courses
       .map((course) => {
         const semesterId = course.year.toLowerCase().split(" ")[0];
@@ -499,15 +576,12 @@ async function loadCourses() {
       .join("");
 
     // --- LÓGICA DE FILTRO INICIAL ---
-    // Seleccionar el último semestre por defecto
     const lastSemester =
       semesters.length > 0 ? semesters[semesters.length - 1] : null;
     if (lastSemester) {
       filterSelect.value = lastSemester.id;
-      // Aplicar el filtro inicial para mostrar solo el último semestre
       filterCourses(lastSemester.id);
     } else {
-      // Si no hay semestres, mostrar todos (comportamiento de respaldo)
       filterCourses("all");
     }
 
@@ -521,18 +595,16 @@ async function loadCourses() {
   }
 }
 
-// Función para actualizar contadores (modificada para el <select>)
+// Función para actualizar contadores
 function updateCourseCounts(courses, semesters) {
   const counts = {};
   const totalCourses = courses.length;
 
-  // Contar cursos por semestre
   courses.forEach((course) => {
     const semesterId = course.year.toLowerCase().split(" ")[0];
     counts[semesterId] = (counts[semesterId] || 0) + 1;
   });
 
-  // Actualizar el texto de cada <option> en el dropdown
   document
     .querySelectorAll("#course-filter-select option")
     .forEach((option) => {
@@ -540,7 +612,6 @@ function updateCourseCounts(courses, semesters) {
       if (filterValue === "all") {
         option.textContent = `All (${totalCourses})`;
       } else if (counts[filterValue]) {
-        // Re-busca el texto base (ej. "1st Semester") para no duplicar contadores
         const semesterData = semesters.find((s) => s.id === filterValue);
         if (semesterData) {
           option.textContent = `${semesterData.text} (${counts[filterValue]})`;
@@ -549,23 +620,19 @@ function updateCourseCounts(courses, semesters) {
     });
 }
 
-// Configuración de filtros (modificada para el <select>)
+// Configuración de filtros
 function setupCourseFilters() {
   const filterSelect = document.getElementById("course-filter-select");
-
-  // Quitar listeners anteriores si existieran (buena práctica)
   filterSelect.removeEventListener("change", handleFilterChange);
-
-  // Añadir un único listener
   filterSelect.addEventListener("change", handleFilterChange);
 }
 
-// Función handler separada para el listener
+// Función handler separada
 function handleFilterChange(event) {
   filterCourses(event.target.value);
 }
 
-// Esta función es la que filtra (no necesita cambios)
+// Función que filtra
 function filterCourses(semester) {
   const courseCards = document.querySelectorAll(".course-card");
 
@@ -586,46 +653,3 @@ function filterCourses(semester) {
     }
   });
 }
-// ▲▲▲ FIN DE LA MODIFICACIÓN ▲▲▲
-
-// Asegúrate de llamar a loadCourses() al final del archivo:
-document.addEventListener("DOMContentLoaded", () => {
-  loadCourses();
-});
-
-// Contact Form Handling
-document
-  .getElementById("contactForm")
-  ?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const submitBtn = form.querySelector('button[type="submit"]');
-
-    // Feedback visual
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-
-    try {
-      const response = await fetch(form.action, {
-        method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" },
-      });
-
-      if (response.ok) {
-        // Redirección manual (como respaldo)
-        window.location.href = form.querySelector('input[name="_next"]').value;
-      } else {
-        throw new Error("Form submission failed");
-      }
-    } catch (error) {
-      // Mensaje de error si falla la redirección
-      const errorMsg = document.createElement("p");
-      errorMsg.className = "form-error";
-      errorMsg.innerHTML = "⚠️ Error sending message. Please try again.";
-      form.appendChild(errorMsg);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = "Send Message";
-    }
-  });
