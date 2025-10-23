@@ -61,8 +61,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const chatSend = document.getElementById("chat-send");
 
   // URL de tu Backend.
-  // CAMBIA ESTO cuando subas tu backend a un servidor real.
-  const CHAT_API_URL = "https://portfolio-backend-t6dn.onrender.com";
+  // En este caso, usamos el backend desplegado en Render.com
+  const CHAT_API_URL = "https://portfolio-backend-t6dn.onrender.com/chat";
 
   if (
     chatToggle &&
