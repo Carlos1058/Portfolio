@@ -41,6 +41,15 @@
     "description": "A simple scientific calculator with basic arithmetic operations and scientific functions.",
     "tags": ["Xamarin", "C#"],
     "stats": []
+  },
+  {
+    "title": "AlivIA",
+    "category": "ai",
+    "image": "assets/projects/alivia.png",
+    "alt": "AlivIA",
+    "github": "https://github.com/josimar3108/AlivIA",
+    "description": "An AI-powered application designed to predict the pancreatic cancer based on medical imaging data.",
+    "tags": ["Python", "XGBoost"],
+    "stats": []
   }
-
 ]

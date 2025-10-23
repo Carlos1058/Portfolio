@@ -35,9 +35,8 @@
         <a href="#contact">Contact</a>
       </nav>
 
-        <!-- Botón de tema oscuro/claro -->
       <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema">
-        <i class="fas fa-moon"></i> <!-- Icono de luna (tema oscuro) -->
+        <i class="fas fa-moon"></i>
       </button>
     </header>
 
@@ -49,11 +48,16 @@
         <h1>Hey, It's <span>Carlos</span></h1>
         <h3 class="typing-text">I'm a <span></span></h3>
         <p>
-          <strong>Future AI Engineer | Data Science & Full-Stack Skills</strong> <br><br>
-          Student in Intelligent Computing Engineering (AI/ML/DL) + Data Science Certification (Udemy). I'm looking for an internship or my first job in: <br><br>
-          ✔ Machine Learning/AI: Python, predictive models, algorithms. <br>
-          ✔ Data Science: Data analysis, visualization, and machine learning. <br>
-          ✔ Web Development: Frontend & Backend (experience with GitHub projects). <br>
+          <strong>Future AI Engineer | Data Science & Full-Stack Skills</strong>
+          <br /><br />
+          Student in Intelligent Computing Engineering (AI/ML/DL) + Data Science
+          Certification (Udemy). I'm looking for an internship or my first job
+          in: <br /><br />
+          ✔ Machine Learning/AI: Python, predictive models, algorithms. <br />
+          ✔ Data Science: Data analysis, visualization, and machine learning.
+          <br />
+          ✔ Web Development: Frontend & Backend (experience with GitHub
+          projects). <br />
         </p>
         <div class="social-icons">
           <a href="https://www.linkedin.com/in/carlos-negrete-385680367"
@@ -62,7 +66,7 @@
           <a href="https://github.com/Carlos1058"
             ><i class="fa-brands fa-github"></i
           ></a>
-          <a href="https://x.com/CarlosNegr7823"
+          <a href="https://x.com/carlos1058_"
             ><i class="fa-brands fa-x-twitter"></i
           ></a>
           <a href="https://www.instagram.com/carlos1058_/"
@@ -76,7 +80,6 @@
     <section id="projects" class="projects">
       <h2 class="section-title">My <span>Projects</span></h2>
 
-      <!-- Filtro por tecnologías -->
       <div class="project-filters">
         <button class="filter-btn active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="ai">AI's</button>
@@ -84,11 +87,8 @@
         <button class="filter-btn" data-filter="app">Apps</button>
       </div>
 
-      <div class="projects-container" id="projects-container">
-        <!-- Los proyectos se cargarán aquí dinámicamente -->
-      </div>
+      <div class="projects-container" id="projects-container"></div>
 
-      <!-- Modal para demos -->
       <div id="demo-modal" class="modal">
         <div class="modal-content">
           <span class="close-modal">&times;</span>
@@ -102,58 +102,48 @@
     <section id="education" class="education">
       <h2 class="section-title">My <span>Education</span></h2>
       <div class="timeline">
-        <div class="timeline-container" id="timeline-container">
-          <!-- Los items se generarán dinámicamente -->
-        </div>
+        <div class="timeline-container" id="timeline-container"></div>
       </div>
     </section>
 
     <section id="courses" class="courses">
       <h2 class="section-title">Relevant <span>Coursework</span></h2>
-      
-      <!-- Filtros (solo "All" estático, los demás se generan automáticamente) -->
+
       <div class="course-filters">
-        <button class="filter-btn active" data-filter="all">
-          All
-          <span class="filter-count"></span>
-        </button>
-        <!-- Los botones de semestre se generarán aquí -->
+        <label for="course-filter-select" class="sr-only"
+          >Filtrar por semestre:</label
+        >
+        <select id="course-filter-select" class="course-filter-select"></select>
       </div>
-      
-      <!-- Contenedor de tarjetas -->
-      <div class="courses-container">
-        <!-- Las tarjetas se cargarán dinámicamente desde courses.json -->
-      </div>
+      <div class="courses-container"></div>
     </section>
 
     <section id="certifications" class="certifications">
       <h2 class="section-title">My <span>Certifications</span></h2>
 
-      <div class="certifications-container" id="certifications-container">
-        <!-- Se llenará dinámicamente desde JSON -->
-      </div>
+      <div class="certifications-container" id="certifications-container"></div>
     </section>
 
     <section id="contact" class="contact">
       <h2 class="section-title">Get in <span>Touch</span></h2>
-      <form id="contactForm" class="contact-form" 
-            action="https://formspree.io/f/mdkzdnnw" 
-            method="POST">
-        
+      <form
+        id="contactForm"
+        class="contact-form"
+        action="https://formspree.io/f/mdkzdnnw"
+        method="POST"
+      >
         <div class="input-group">
-          <input type="text" name="name" placeholder="Your Name" required>
-          <input type="email" name="email" placeholder="Your Email" required>
+          <input type="text" name="name" placeholder="Your Name" required />
+          <input type="email" name="email" placeholder="Your Email" required />
         </div>
-        
-        <input type="text" name="_subject" placeholder="Subject">
+
+        <input type="text" name="_subject" placeholder="Subject" />
         <textarea name="message" placeholder="Your Message" required></textarea>
-        
-        <!-- Campo oculto para redirección después del envío (opcional) -->
-        <input type="hidden" name="_next" value="thanks.html">
-        
+
+        <input type="hidden" name="_next" value="thanks.html" />
+
         <button type="submit" class="btn">Send Message</button>
-        
-        <!-- Mensaje de estado (lo añadiremos con JavaScript) -->
+
         <p id="formStatus" class="form-status"></p>
       </form>
     </section>
@@ -162,6 +152,42 @@
       <p>&copy; 2025 Carlos Negrete. All rights reserved.</p>
     </footer>
 
+    <button id="chat-toggle" class="chat-toggle-btn" aria-label="Abrir chat">
+      <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <div id="chat-window" class="chat-window">
+      <div class="chat-header">
+        <h3>AI Assistant</h3>
+        <button id="chat-close" class="chat-close-btn" aria-label="Cerrar chat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div id="chat-body" class="chat-body">
+        <div class="chat-message bot">
+          <p>
+            ¡Hola! Soy el asistente de Carlos. ¿En qué puedo ayudarte? Puedes
+            preguntar sobre sus estudios, proyectos o habilidades.
+          </p>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <input
+          type="text"
+          id="chat-input"
+          placeholder="Escribe tu mensaje..."
+        />
+        <button
+          id="chat-send"
+          class="chat-send-btn"
+          aria-label="Enviar mensaje"
+        >
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
     <script src="script.js"></script>
     <div class="custom-cursor"></div>
   </body>

@@ -330,11 +330,13 @@ section {
 }
 
 /* Validación visual */
-input:invalid, textarea:invalid {
+input:invalid,
+textarea:invalid {
   border-color: #ff4444 !important;
 }
 
-input:focus:valid, textarea:focus:valid {
+input:focus:valid,
+textarea:focus:valid {
   border-color: #00c851 !important;
 }
 
@@ -616,6 +618,57 @@ footer {
   color: white;
   box-shadow: 0 0 15px rgba(106, 20, 163, 0.3);
 }
+
+/* ▼▼▼ MODIFICACIÓN AQUÍ ▼▼▼ */
+/* Nuevos estilos para el dropdown de cursos */
+.course-filter-select {
+  padding: 0.8rem 2rem;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  border-radius: 2rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Flecha SVG personalizada para el dropdown (color light) */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236a14a3%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-13%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2013l128%20128c3.6%203.6%207.8%205.4%2013%205.4s9.4-1.8%2013-5.4l128-128c3.6-3.6%205.4-7.8%205.4-13%200-5-1.8-9.4-5.4-13z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.5rem center;
+  background-size: 1em;
+  padding-right: 4rem; /* Espacio para la flecha */
+}
+
+.course-filter-select:hover {
+  background-color: rgba(106, 20, 163, 0.05);
+}
+
+/* Ajuste de la flecha para tema oscuro */
+[data-theme="dark"] .course-filter-select {
+  color: var(--primary-color);
+  /* Flecha SVG personalizada para el dropdown (color dark) */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239c4dff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-13%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2013l128%20128c3.6%203.6%207.8%205.4%2013%205.4s9.4-1.8%2013-5.4l128-128c3.6-3.6%205.4-7.8%205.4-13%200-5-1.8-9.4-5.4-13z%22%2F%3E%3C%2Fsvg%3E");
+}
+[data-theme="dark"] .course-filter-select:hover {
+  background-color: rgba(156, 77, 255, 0.05);
+}
+
+/* Clase para ocultar labels de forma accesible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+/* ▲▲▲ FIN DE LA MODIFICACIÓN ▲▲▲ */
 
 .projects-container,
 .certifications-container {
@@ -900,7 +953,6 @@ footer {
   cursor: pointer;
 }
 
-
 /* Estilos para el botón de tema */
 .theme-toggle {
   background: transparent;
@@ -941,7 +993,6 @@ footer {
   color: white;
 }
 
-
 /* Estilos para la sección de cursos */
 
 .courses {
@@ -978,4 +1029,184 @@ footer {
 .course-card p {
   font-size: 1.4rem;
   color: var(--text-light);
+}
+
+/* ---------------------------------
+   ESTILOS DEL CHATBOT
+--------------------------------- */
+
+/* 1. Botón de burbuja (toggle) */
+.chat-toggle-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 6rem;
+  height: 6rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 2.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.chat-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+/* 2. Ventana principal del chat */
+.chat-window {
+  position: fixed;
+  bottom: 9rem;
+  right: 2rem;
+  width: 350px;
+  max-width: calc(100% - 4rem);
+  height: 500px;
+  background-color: var(--background-color);
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  display: none; /* Oculto por defecto */
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+/* 2.1. Clase 'show' para mostrar la ventana */
+.chat-window.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 3. Encabezado del chat */
+.chat-header {
+  padding: 1.5rem 2rem;
+  background-color: var(--secondary-color);
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.chat-close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--text-light);
+  transition: color 0.3s ease;
+}
+
+.chat-close-btn:hover {
+  color: var(--primary-color);
+}
+
+/* 4. Cuerpo del chat (mensajes) */
+.chat-body {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.chat-message {
+  max-width: 85%;
+  padding: 1rem 1.5rem;
+  border-radius: 1.2rem;
+  line-height: 1.5;
+  font-size: 1.4rem;
+}
+
+.chat-message.bot {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border-bottom-left-radius: 0;
+  align-self: flex-start;
+}
+
+.chat-message.user {
+  background-color: var(--primary-color);
+  color: white;
+  border-bottom-right-radius: 0;
+  align-self: flex-end;
+}
+
+/* 5. Área de input */
+.chat-input-area {
+  padding: 1rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 1rem;
+}
+
+.chat-input-area input {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1.4rem;
+  border: 1px solid #ddd;
+  border-radius: 2rem;
+  transition: border-color 0.3s ease;
+}
+
+.chat-input-area input:focus {
+  border-color: var(--primary-color);
+}
+
+.chat-send-btn {
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1.8rem;
+  transition: background-color 0.3s ease;
+}
+
+.chat-send-btn:hover {
+  background-color: #52107a;
+}
+[data-theme="dark"] .chat-send-btn:hover {
+  background-color: #b374ff;
+}
+
+/* 6. Estilos modo oscuro */
+[data-theme="dark"] .chat-header {
+  border-bottom-color: #333;
+}
+[data-theme="dark"] .chat-input-area {
+  border-top-color: #333;
+}
+[data-theme="dark"] .chat-input-area input {
+  background-color: #1e1e1e;
+  border-color: #333;
+  color: white;
+}
+[data-theme="dark"] .chat-message.bot {
+  background-color: #1e1e1e;
+}
+
+/* 7. Responsividad del chat */
+@media (max-width: 450px) {
+  .chat-window {
+    bottom: 1rem;
+    right: 1rem;
+    width: calc(100% - 2rem);
+    height: 70vh;
+  }
 }
