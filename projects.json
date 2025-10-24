@@ -33,16 +33,6 @@
     "stats": []
   },
   {
-    "title": "A simple cientific calculator",
-    "category": "app",
-    "image": "assets/projects/calculator.jpg",
-    "alt": "Scientific Calculator",
-    "github": "https://github.com/Carlos1058/cientific-calculator",
-    "description": "A simple scientific calculator with basic arithmetic operations and scientific functions.",
-    "tags": ["Xamarin", "C#"],
-    "stats": []
-  },
-  {
     "title": "AlivIA",
     "category": "ai",
     "image": "assets/projects/alivia.png",

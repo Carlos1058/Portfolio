@@ -65,20 +65,63 @@ header {
   color: var(--text-color);
 }
 
+/* ▼▼▼ MODIFICACIONES DE "GOOEY EFFECT" ▼▼▼ */
+nav {
+  position: relative; /* Para la burbuja */
+}
+
 nav a {
   font-size: 1.8rem;
   color: var(--text-color);
-  margin-left: 4rem;
+  margin-left: 1rem; /* Reducido para compensar el padding */
   font-weight: 500;
   transition: 0.3s ease;
   border-bottom: 3px solid transparent;
+  position: relative; /* Para z-index */
+  z-index: 1; /* Para estar sobre la burbuja */
+  padding: 0.5rem 1.5rem; /* AÑADIDO: Relleno horizontal */
 }
 
 nav a:hover,
 nav a.active {
   color: var(--primary-color);
-  border-bottom: 3px solid var(--primary-color);
+  border-bottom: 3px solid var(--primary-color); /* Mantenido para móvil */
 }
+
+.nav-bubble {
+  display: none; /* Oculto en móvil por defecto */
+}
+
+/* Estilos de escritorio para el efecto */
+@media (min-width: 996px) {
+
+  nav a:hover,
+  nav a.active {
+    border-bottom-color: transparent; /* Quitar borde en escritorio */
+  }
+  
+.nav-bubble {
+    display: block; /* Mostrar burbuja en escritorio */
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100px; /* Ancho por defecto, JS lo cambiará */
+    
+    /* Efecto "Liquid Glass" */
+    background-color: rgba(106, 20, 163, 0.2); /* Morado claro transparente */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* Para Safari */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil de vidrio */
+
+    border-radius: 2rem;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 0;
+    opacity: 0; /* JS la mostrará */
+  }
+}
+/* ▲▲▲ FIN DE LA MODIFICACIÓN ▲▲▲ */
+
 
 @media (max-width: 995px) {
   .menu-toggle {
@@ -100,6 +143,7 @@ nav a.active {
     align-items: center;
     transition: 0.5s;
     z-index: 100;
+    filter: none; /* Asegurarse de quitar el filtro en móvil */
   }
 
   nav.active {
@@ -276,7 +320,7 @@ section {
 }
 
 .contact {
-  background-color: var(--secondary-color);
+  background-color: var(--background-color); /* Blanco */
 }
 
 .contact-form {
@@ -330,13 +374,11 @@ section {
 }
 
 /* Validación visual */
-input:invalid,
-textarea:invalid {
+input:invalid, textarea:invalid {
   border-color: #ff4444 !important;
 }
 
-input:focus:valid,
-textarea:focus:valid {
+input:focus:valid, textarea:focus:valid {
   border-color: #00c851 !important;
 }
 
@@ -437,10 +479,21 @@ footer {
   position: relative;
   width: 45%;
   padding: 2rem;
-  background: var(--secondary-color);
+  background: var(--background-color); /* Blanco */
   border-radius: 0.8rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+/* Ajuste para fondo gris en secciones de timeline grises */
+.experience .timeline-content,
+[data-theme="dark"] .timeline-content {
+  background: var(--background-color);
+}
+
+[data-theme="dark"] .experience .timeline-content {
+  background: #1e1e1e;
+}
+
 
 .timeline-item:nth-child(odd) .timeline-content {
   float: right;
@@ -543,12 +596,48 @@ footer {
 
 /* ---------------------------PROJECTS SECTION - Estilos compartidos con certificaciones*/
 .projects {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color); /* Gris */
   padding: 10rem 9% 5rem;
 }
 
+/* ▼▼▼ NUEVA SECCIÓN DE EXPERIENCIA ▼▼▼ */
+.experience {
+  background-color: var(--secondary-color); /* Gris */
+  padding: 10rem 9% 5rem;
+}
+.experience .timeline-content {
+  background: var(--background-color); /* Tarjetas blancas sobre fondo gris */
+}
+[data-theme="dark"] .experience .timeline-content {
+  background: #1e1e1e;
+}
+
+/* Estilo de botón SuperProf actualizado */
+.btn-superprof {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.2rem; /* Más pequeño */
+  font-size: 1.3rem; /* Más pequeño */
+  font-weight: 600;
+  border-radius: 2rem;
+  transition: all 0.3s ease;
+  
+  /* Estilo Outline que coincide con tu web */
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-superprof:hover {
+  transform: translateY(-3px);
+  background: var(--primary-color);
+  color: white;
+}
+/* ▲▲▲ FIN DE NUEVOS ESTILOS ▲▲▲ */
+
+
 .certifications {
-  background-color: var(--background-color);
+  background-color: var(--secondary-color); /* Gris */
   padding: 10rem 9% 5rem;
 }
 
@@ -619,7 +708,6 @@ footer {
   box-shadow: 0 0 15px rgba(106, 20, 163, 0.3);
 }
 
-/* ▼▼▼ MODIFICACIÓN AQUÍ ▼▼▼ */
 /* Nuevos estilos para el dropdown de cursos */
 .course-filter-select {
   padding: 0.8rem 2rem;
@@ -668,7 +756,7 @@ footer {
   white-space: nowrap;
   border-width: 0;
 }
-/* ▲▲▲ FIN DE LA MODIFICACIÓN ▲▲▲ */
+
 
 .projects-container,
 .certifications-container {
@@ -772,6 +860,11 @@ footer {
   font-size: 1.2rem;
   font-weight: 600;
 }
+
+[data-theme="dark"] .tech-tag {
+  background: #1e1e1e;
+}
+
 
 .project-info p {
   font-size: 1.5rem;
@@ -953,6 +1046,7 @@ footer {
   cursor: pointer;
 }
 
+
 /* Estilos para el botón de tema */
 .theme-toggle {
   background: transparent;
@@ -993,10 +1087,35 @@ footer {
   color: white;
 }
 
-/* Estilos para la sección de cursos */
+[data-theme="dark"] .contact-form input,
+[data-theme="dark"] .contact-form textarea {
+  background: #1e1e1e;
+  border-color: #333;
+  color: white;
+}
 
+/* ▼▼▼ PEGA EL NUEVO CÓDIGO AQUÍ ▼▼▼ */
+[data-theme="dark"] .nav-bubble {
+  background-color: rgba(156, 77, 255, 0.2); /* Morado claro (dark mode) transparente */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ESTO ARREGLA EL TEXTO NEGRO INVISIBLE */
+[data-theme="dark"] nav a {
+  color: var(--text-color);
+}
+[data-theme="dark"] nav a:hover {
+  color: var(--primary-color);
+}
+[data-theme="dark"] nav a.active {
+  color: var(--primary-color);
+}
+
+
+/* Estilos para la sección de cursos */
+/* ▼▼▼ PATRÓN DE COLOR ALTERNADO ▼▼▼ */
 .courses {
-  background-color: var(--secondary-color);
+  background-color: var(--background-color); /* Blanco */
   padding: 10rem 9% 5rem;
 }
 
@@ -1014,6 +1133,12 @@ footer {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease;
 }
+
+[data-theme="dark"] .course-card {
+  background: #1e1e1e;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
 
 .course-card:hover {
   transform: translateY(-5px);

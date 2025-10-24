@@ -14,8 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Cerrar menú al hacer clic en enlace
   document.querySelectorAll("nav a").forEach((link) => {
     link.addEventListener("click", () => {
-      nav.classList.remove("active");
-      menuToggle.querySelector("i").classList.remove("fa-times");
+      // Solo cerrar si el menú móvil está activo
+      if (nav.classList.contains("active")) {
+        nav.classList.remove("active");
+        menuToggle.querySelector("i").classList.remove("fa-times");
+      }
     });
   });
 
@@ -26,6 +29,88 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // -------------------------------
+  // 1.B. NAVEGACIÓN "GOOEY" Y SCROLL ACTIVO
+  // -------------------------------
+  const navLinks = document.querySelectorAll("nav a[href^='#']"); // Solo enlaces internos
+  const bubble = document.querySelector(".nav-bubble");
+  const sections = document.querySelectorAll("section");
+
+  function updateBubble(activeLink) {
+    if (!activeLink || !bubble) return;
+
+    // Solo ejecutar en vista de escritorio (coincide con el media query de CSS)
+    if (window.innerWidth < 996) {
+      bubble.style.opacity = '0'; // Ocultar burbuja en móvil
+      return;
+    }
+    
+    bubble.style.opacity = '1';
+    bubble.style.width = `${activeLink.offsetWidth}px`;
+    bubble.style.height = `${activeLink.offsetHeight}px`;
+    bubble.style.top = `${activeLink.offsetTop}px`;
+    bubble.style.left = `${activeLink.offsetLeft}px`;
+  }
+
+// Mover la burbuja al enlace HOVER (NUEVO)
+  navLinks.forEach(link => {
+    link.addEventListener('mouseenter', () => {
+      // Solo mover en escritorio
+      if (window.innerWidth >= 996) {
+        updateBubble(link);
+      }
+    });
+  });
+
+  // Devolver la burbuja al ACTIVO cuando el mouse sale del NAV (NUEVO)
+  nav.addEventListener('mouseleave', () => {
+    if (window.innerWidth >= 996) {
+      const activeLink = document.querySelector("nav a.active");
+      updateBubble(activeLink);
+    }
+  });
+
+  
+  // Actualizar en scroll
+  function onScroll() {
+    let currentSection = sections[0];
+    
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 100; // 100px offset from top
+      if (window.scrollY >= sectionTop) {
+        currentSection = section;
+      }
+    });
+
+    let activeLink;
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${currentSection.id}`) {
+        link.classList.add('active');
+        activeLink = link;
+      }
+    });
+
+    updateBubble(activeLink);
+  }
+
+  window.addEventListener('scroll', onScroll);
+
+  // Mover la burbuja a la posición inicial (Home) al cargar
+  // Usar un pequeño timeout para asegurar que todo esté renderizado
+  setTimeout(() => {
+    const initialActiveLink = document.querySelector("nav a.active");
+    updateBubble(initialActiveLink);
+  }, 300);
+
+  // Actualizar en redimensionar ventana (para que la burbuja se re-calcule)
+  window.addEventListener('resize', () => {
+    const activeLink = document.querySelector("nav a.active");
+    updateBubble(activeLink);
+  });
+  // --- FIN DE LA LÓGICA GOOEY ---
+
+
+  // -------------------------------
   // 2. Carga de datos y configuraciones
   // -------------------------------
   loadProjects().then(() => {
@@ -34,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   loadEducation();
   loadCertifications();
-  loadCourses(); // <-- Movido aquí
+  loadCourses();
 
   // -------------------------------
   // 3. Cursor personalizado
@@ -64,14 +149,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // URL de tu Backend.
   const CHAT_API_URL = "https://portfolio-backend-t6dn.onrender.com/chat";
 
-  if (
-    chatToggle &&
-    chatWindow &&
-    chatClose &&
-    chatBody &&
-    chatInput &&
-    chatSend
-  ) {
+  if (chatToggle && chatWindow && chatClose && chatBody && chatInput && chatSend) {
+    
     // Abrir chat
     chatToggle.addEventListener("click", () => {
       chatWindow.classList.toggle("show");
@@ -119,9 +198,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const data = await response.json();
-
+        
         // 4. Reemplaza el "Escribiendo..." con la respuesta real
         updateLastBotMessage(data.reply);
+
       } catch (error) {
         console.error("Error al enviar mensaje:", error);
         // 5. Muestra un mensaje de error si falla
@@ -141,9 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Función para actualizar el último mensaje del bot (para el "Escribiendo...")
     function updateLastBotMessage(text) {
-      const lastMessage = chatBody.querySelector(
-        ".chat-message.bot:last-child"
-      );
+      const lastMessage = chatBody.querySelector(".chat-message.bot:last-child");
       if (lastMessage) {
         lastMessage.innerHTML = `<p>${text}</p>`;
         chatBody.scrollTop = chatBody.scrollHeight;
@@ -152,79 +230,67 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // -------------------------------
-  // 5. Tema oscuro/claro (¡MOVIDO AQUÍ DENTRO!)
+  // 5. Tema oscuro/claro
   // -------------------------------
-  const themeToggle = document.getElementById("theme-toggle");
-  const currentTheme = localStorage.getItem("theme") || "light";
+  const themeToggle = document.getElementById('theme-toggle');
+  const currentTheme = localStorage.getItem('theme') || 'light';
 
   // Aplica el tema guardado al cargar la página
-  document.documentElement.setAttribute("data-theme", currentTheme);
+  document.documentElement.setAttribute('data-theme', currentTheme);
   updateIcon();
 
   // Alternar tema al hacer clic
-  themeToggle.addEventListener("click", () => {
-    const newTheme =
-      document.documentElement.getAttribute("data-theme") === "light"
-        ? "dark"
-        : "light";
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
+  themeToggle.addEventListener('click', () => {
+    const newTheme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
     updateIcon();
   });
 
   // Actualizar icono según el tema
   function updateIcon() {
-    const isDark =
-      document.documentElement.getAttribute("data-theme") === "dark";
-    themeToggle.innerHTML = isDark
-      ? '<i class="fas fa-sun"></i>'
-      : '<i class="fas fa-moon"></i>';
-    themeToggle.setAttribute(
-      "aria-label",
-      isDark ? "Cambiar a tema claro" : "Cambiar a tema oscuro"
-    );
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    themeToggle.setAttribute('aria-label', isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
   }
 
   // -------------------------------
-  // 6. Contact Form Handling (¡MOVIDO AQUÍ DENTRO!)
+  // 6. Contact Form Handling
   // -------------------------------
-  document
-    .getElementById("contactForm")
-    ?.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const submitBtn = form.querySelector('button[type="submit"]');
-
-      // Feedback visual
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-
-      try {
-        const response = await fetch(form.action, {
-          method: "POST",
-          body: new FormData(form),
-          headers: { Accept: "application/json" },
-        });
-
-        if (response.ok) {
-          // Redirección manual (como respaldo)
-          window.location.href = form.querySelector(
-            'input[name="_next"]'
-          ).value;
-        } else {
-          throw new Error("Form submission failed");
-        }
-      } catch (error) {
-        // Mensaje de error si falla la redirección
-        const errorMsg = document.createElement("p");
-        errorMsg.className = "form-error";
-        errorMsg.innerHTML = "⚠️ Error sending message. Please try again.";
-        form.appendChild(errorMsg);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = "Send Message";
+  document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    // Feedback visual
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (response.ok) {
+        // Redirección manual (como respaldo)
+        window.location.href = form.querySelector('input[name="_next"]').value;
+      } else {
+        throw new Error('Form submission failed');
       }
-    });
+    } catch (error) {
+      // Mensaje de error si falla la redirección
+      const errorMsg = document.createElement('p');
+      errorMsg.className = 'form-error';
+      errorMsg.innerHTML = '⚠️ Error sending message. Please try again.';
+      form.appendChild(errorMsg);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Send Message';
+    }
+  });
+
 }); // <-- ESTA ES LA ÚNICA LLAVE QUE CIERRA EL DOMContentLoaded
 
 // =============================================
@@ -510,24 +576,22 @@ async function loadCourses() {
     const filterSelect = document.getElementById("course-filter-select");
 
     // Limpiar opciones existentes
-    filterSelect.innerHTML = "";
+    filterSelect.innerHTML = '';
 
     // Obtener semestres únicos y ordenarlos
     const semesterMap = new Map();
-    courses.forEach((course) => {
+    courses.forEach(course => {
       const semesterNum = course.year.match(/\d+/)?.[0] || 0;
-      const id = course.year.toLowerCase().split(" ")[0]; // "1st", "2nd", etc.
+      const id = course.year.toLowerCase().split(' ')[0]; // "1st", "2nd", etc.
       if (!semesterMap.has(id)) {
         semesterMap.set(id, {
           id,
           text: course.year,
-          num: parseInt(semesterNum),
+          num: parseInt(semesterNum)
         });
       }
     });
-    const semesters = Array.from(semesterMap.values()).sort(
-      (a, b) => a.num - b.num
-    );
+    const semesters = Array.from(semesterMap.values()).sort((a, b) => a.num - b.num);
 
     // Generar opciones para el dropdown
     // 1. Añadir la opción "All"
@@ -537,7 +601,7 @@ async function loadCourses() {
     filterSelect.appendChild(allOption);
 
     // 2. Añadir opciones para cada semestre
-    semesters.forEach((semester) => {
+    semesters.forEach(semester => {
       const option = document.createElement("option");
       option.value = semester.id;
       option.textContent = semester.text;
@@ -548,36 +612,23 @@ async function loadCourses() {
     updateCourseCounts(courses, semesters);
 
     // Renderizar todas las tarjetas de cursos
-    container.innerHTML = courses
-      .map((course) => {
-        const semesterId = course.year.toLowerCase().split(" ")[0];
-        return `
+    container.innerHTML = courses.map(course => {
+      const semesterId = course.year.toLowerCase().split(' ')[0];
+      return `
         <div class="course-card" data-semester="${semesterId}">
           <h3>${course.name}</h3>
           <p class="course-semester">${course.year}</p>
-          ${
-            course.description
-              ? `<p class="course-description">${course.description}</p>`
-              : ""
-          }
+          ${course.description ? `<p class="course-description">${course.description}</p>` : ''}
           <div class="course-skills">
-            ${course.skills
-              .map((skill) => `<span class="tech-tag">${skill}</span>`)
-              .join("")}
+            ${course.skills.map(skill => `<span class="tech-tag">${skill}</span>`).join("")}
           </div>
-          ${
-            course.category
-              ? `<span class="course-category">${course.category}</span>`
-              : ""
-          }
+          ${course.category ? `<span class="course-category">${course.category}</span>` : ''}
         </div>
       `;
-      })
-      .join("");
+    }).join("");
 
     // --- LÓGICA DE FILTRO INICIAL ---
-    const lastSemester =
-      semesters.length > 0 ? semesters[semesters.length - 1] : null;
+    const lastSemester = semesters.length > 0 ? semesters[semesters.length - 1] : null;
     if (lastSemester) {
       filterSelect.value = lastSemester.id;
       filterCourses(lastSemester.id);
@@ -587,6 +638,7 @@ async function loadCourses() {
 
     // Configurar el event listener para el dropdown
     setupCourseFilters();
+
   } catch (error) {
     console.error("Error loading courses:", error);
     document.querySelector(".courses-container").innerHTML = `
@@ -600,24 +652,22 @@ function updateCourseCounts(courses, semesters) {
   const counts = {};
   const totalCourses = courses.length;
 
-  courses.forEach((course) => {
-    const semesterId = course.year.toLowerCase().split(" ")[0];
+  courses.forEach(course => {
+    const semesterId = course.year.toLowerCase().split(' ')[0];
     counts[semesterId] = (counts[semesterId] || 0) + 1;
   });
 
-  document
-    .querySelectorAll("#course-filter-select option")
-    .forEach((option) => {
-      const filterValue = option.value;
-      if (filterValue === "all") {
-        option.textContent = `All (${totalCourses})`;
-      } else if (counts[filterValue]) {
-        const semesterData = semesters.find((s) => s.id === filterValue);
-        if (semesterData) {
-          option.textContent = `${semesterData.text} (${counts[filterValue]})`;
-        }
+  document.querySelectorAll("#course-filter-select option").forEach(option => {
+    const filterValue = option.value;
+    if (filterValue === "all") {
+      option.textContent = `All (${totalCourses})`;
+    } else if (counts[filterValue]) {
+      const semesterData = semesters.find(s => s.id === filterValue);
+      if (semesterData) {
+        option.textContent = `${semesterData.text} (${counts[filterValue]})`;
       }
-    });
+    }
+  });
 }
 
 // Configuración de filtros
