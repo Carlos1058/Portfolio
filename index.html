@@ -17,8 +17,8 @@
     />
     <link rel="stylesheet" href="style.css" />
     <title>Portfolio | Carlos Negrete</title>
-    <link rel="icon" type="image/png" href="assets/various/favicon.png"> 
-    </head>
+    <link rel="icon" type="image/png" href="assets/various/favicon.png" />
+  </head>
   <body>
     <header>
       <a href="#" class="logo">Carlos Negrete</a>
@@ -35,10 +35,22 @@
         <a href="#courses">Courses</a>
         <a href="#certifications">Certifications</a>
         <a href="#contact">Contact</a>
-        <div class="nav-bubble"></div> </nav>
-      <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema">
-        <i class="fas fa-moon"></i>
+        <div class="nav-bubble"></div>
+        <button
+          id="theme-toggle-mobile"
+          class="theme-toggle"
+          aria-label="Alternar tema"
+        >
+          <i class="fas fa-moon"></i>
         </button>
+      </nav>
+      <button
+        id="theme-toggle-desktop"
+        class="theme-toggle"
+        aria-label="Alternar tema"
+      >
+        <i class="fas fa-moon"></i>
+      </button>
     </header>
 
     <section id="home" class="home">
@@ -88,8 +100,7 @@
         <button class="filter-btn" data-filter="app">Apps</button>
       </div>
 
-      <div class="projects-container" id="projects-container">
-        </div>
+      <div class="projects-container" id="projects-container"></div>
 
       <div id="demo-modal" class="modal">
         <div class="modal-content">
@@ -104,8 +115,7 @@
     <section id="education" class="education">
       <h2 class="section-title">My <span>Education</span></h2>
       <div class="timeline">
-        <div class="timeline-container" id="timeline-container">
-          </div>
+        <div class="timeline-container" id="timeline-container"></div>
       </div>
     </section>
 
@@ -113,7 +123,6 @@
       <h2 class="section-title">My <span>Experience</span></h2>
       <div class="timeline">
         <div class="timeline-container">
-          
           <div class="timeline-item odd">
             <div class="timeline-date">Jul 2025 - Present</div>
             <div class="timeline-content">
@@ -121,7 +130,9 @@
               <h3>Artificial Intelligence Consultant Intern</h3>
               <h4>DYCSI</h4>
               <p>
-                Developing custom machine learning models and leveraging existing AI tools to generate strategic solutions. Implementing prototypes and training staff.
+                Developing custom machine learning models and leveraging
+                existing AI tools to generate strategic solutions. Implementing
+                prototypes and training staff.
               </p>
               <div class="education-tags">
                 <span class="tag">AI</span>
@@ -138,9 +149,14 @@
               <h3>Programming & Math Tutor</h3>
               <h4>SuperProf</h4>
               <p>
-                Teaching Python and Mathematics to children, teenagers, and adults, adapting study plans to each student's individual needs.
+                Teaching Python and Mathematics to children, teenagers, and
+                adults, adapting study plans to each student's individual needs.
               </p>
-              <a href="https://www.superprof.mx/ir/26133375-94af32" target="_blank" class="btn-superprof">
+              <a
+                href="https://www.superprof.mx/ir/26133375-94af32"
+                target="_blank"
+                class="btn-superprof"
+              >
                 <i class="fas fa-eye"></i> View SuperProf Profile
               </a>
             </div>
@@ -153,7 +169,9 @@
               <h3>Barista & Developer</h3>
               <h4>La Crepería FD REV</h4>
               <p>
-                Developed "Check-Me" access control system (Python/OpenCV) to streamline employee tracking, reducing check-in time by 40%. Managed POS systems and inventory databases.
+                Developed "Check-Me" access control system (Python/OpenCV) to
+                streamline employee tracking, reducing check-in time by 40%.
+                Managed POS systems and inventory databases.
               </p>
               <div class="education-tags">
                 <span class="tag">Python</span>
@@ -162,7 +180,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -170,21 +187,19 @@
       <h2 class="section-title">Relevant <span>Coursework</span></h2>
 
       <div class="course-filters">
-        <label for="course-filter-select" class="sr-only">Filtrar por semestre:</label>
-        <select id="course-filter-select" class="course-filter-select">
-          </select>
+        <label for="course-filter-select" class="sr-only"
+          >Filtrar por semestre:</label
+        >
+        <select id="course-filter-select" class="course-filter-select"></select>
       </div>
 
-
-      <div class="courses-container">
-        </div>
+      <div class="courses-container"></div>
     </section>
 
     <section id="certifications" class="certifications">
       <h2 class="section-title">My <span>Certifications</span></h2>
 
-      <div class="certifications-container" id="certifications-container">
-        </div>
+      <div class="certifications-container" id="certifications-container"></div>
     </section>
 
     <section id="contact" class="contact">
@@ -220,27 +235,36 @@
     </button>
 
     <div id="chat-window" class="chat-window">
-      
       <div class="chat-header">
-        <h3>AI Assistant</h3>
+        <h3>Nami - Chatbot</h3>
         <button id="chat-close" class="chat-close-btn" aria-label="Cerrar chat">
           <i class="fas fa-times"></i>
         </button>
       </div>
-      
+
       <div id="chat-body" class="chat-body">
         <div class="chat-message bot">
-          <p>¡Hola! Soy el asistente de Carlos. ¿En qué puedo ayudarte? Puedes preguntar sobre sus estudios, proyectos o habilidades.</p>
+          <p>
+            ¡Hola! Soy la asistente de Carlos. ¿En qué puedo ayudarte? Puedes
+            preguntar sobre sus estudios, proyectos, etc.
+          </p>
         </div>
       </div>
-      
+
       <div class="chat-input-area">
-        <input type="text" id="chat-input" placeholder="Escribe tu mensaje..." />
-        <button id="chat-send" class="chat-send-btn" aria-label="Enviar mensaje">
+        <input
+          type="text"
+          id="chat-input"
+          placeholder="Escribe tu mensaje..."
+        />
+        <button
+          id="chat-send"
+          class="chat-send-btn"
+          aria-label="Enviar mensaje"
+        >
           <i class="fas fa-paper-plane"></i>
         </button>
       </div>
-
     </div>
     <script src="script.js"></script>
     <div class="custom-cursor"></div>

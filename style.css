@@ -94,20 +94,19 @@ nav a.active {
 
 /* Estilos de escritorio para el efecto */
 @media (min-width: 996px) {
-
   nav a:hover,
   nav a.active {
     border-bottom-color: transparent; /* Quitar borde en escritorio */
   }
-  
-.nav-bubble {
+
+  .nav-bubble {
     display: block; /* Mostrar burbuja en escritorio */
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100px; /* Ancho por defecto, JS lo cambiará */
-    
+
     /* Efecto "Liquid Glass" */
     background-color: rgba(106, 20, 163, 0.2); /* Morado claro transparente */
     backdrop-filter: blur(10px);
@@ -121,7 +120,6 @@ nav a.active {
   }
 }
 /* ▲▲▲ FIN DE LA MODIFICACIÓN ▲▲▲ */
-
 
 @media (max-width: 995px) {
   .menu-toggle {
@@ -153,6 +151,13 @@ nav a.active {
   nav a {
     margin: 1.5rem 0;
     font-size: 2rem;
+  }
+
+  #theme-toggle-desktop {
+    display: none; /* Oculta el botón de escritorio en móvil */
+  }
+  #theme-toggle-mobile {
+    display: block; /* Muestra el botón de móvil (dentro del nav) */
   }
 }
 
@@ -374,11 +379,13 @@ section {
 }
 
 /* Validación visual */
-input:invalid, textarea:invalid {
+input:invalid,
+textarea:invalid {
   border-color: #ff4444 !important;
 }
 
-input:focus:valid, textarea:focus:valid {
+input:focus:valid,
+textarea:focus:valid {
   border-color: #00c851 !important;
 }
 
@@ -493,7 +500,6 @@ footer {
 [data-theme="dark"] .experience .timeline-content {
   background: #1e1e1e;
 }
-
 
 .timeline-item:nth-child(odd) .timeline-content {
   float: right;
@@ -621,7 +627,7 @@ footer {
   font-weight: 600;
   border-radius: 2rem;
   transition: all 0.3s ease;
-  
+
   /* Estilo Outline que coincide con tu web */
   background: transparent;
   border: 2px solid var(--primary-color);
@@ -634,7 +640,6 @@ footer {
   color: white;
 }
 /* ▲▲▲ FIN DE NUEVOS ESTILOS ▲▲▲ */
-
 
 .certifications {
   background-color: var(--secondary-color); /* Gris */
@@ -757,7 +762,6 @@ footer {
   border-width: 0;
 }
 
-
 .projects-container,
 .certifications-container {
   display: grid;
@@ -864,7 +868,6 @@ footer {
 [data-theme="dark"] .tech-tag {
   background: #1e1e1e;
 }
-
 
 .project-info p {
   font-size: 1.5rem;
@@ -1046,7 +1049,6 @@ footer {
   cursor: pointer;
 }
 
-
 /* Estilos para el botón de tema */
 .theme-toggle {
   background: transparent;
@@ -1055,7 +1057,6 @@ footer {
   cursor: pointer;
   border: none;
   padding: 0.5rem;
-  margin-left: 2rem;
   transition: transform 0.3s ease, color 0.3s ease;
 }
 
@@ -1071,6 +1072,26 @@ footer {
   --background-color: #121212;
   --text-color: #f0f0f0;
   --text-light: #aaa;
+}
+
+#theme-toggle-desktop {
+  margin-left: 2rem; /* Le devolvemos el margen solo al de escritorio */
+}
+
+#theme-toggle-mobile {
+  display: none; /* Oculto por defecto (en escritorio) */
+  background: transparent;
+  color: var(--text-color);
+  font-size: 2.5rem;
+  cursor: pointer;
+  border: none;
+  padding: 0.5rem;
+  margin-top: 2rem; /* Espacio sobre los enlaces del menú */
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+#theme-toggle-mobile:hover {
+  transform: rotate(20deg);
+  color: var(--primary-color);
 }
 
 /* Ajustes específicos para el tema oscuro */
@@ -1096,7 +1117,12 @@ footer {
 
 /* ▼▼▼ PEGA EL NUEVO CÓDIGO AQUÍ ▼▼▼ */
 [data-theme="dark"] .nav-bubble {
-  background-color: rgba(156, 77, 255, 0.2); /* Morado claro (dark mode) transparente */
+  background-color: rgba(
+    156,
+    77,
+    255,
+    0.2
+  ); /* Morado claro (dark mode) transparente */
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -1110,7 +1136,6 @@ footer {
 [data-theme="dark"] nav a.active {
   color: var(--primary-color);
 }
-
 
 /* Estilos para la sección de cursos */
 /* ▼▼▼ PATRÓN DE COLOR ALTERNADO ▼▼▼ */
@@ -1138,7 +1163,6 @@ footer {
   background: #1e1e1e;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
-
 
 .course-card:hover {
   transform: translateY(-5px);
