@@ -157,7 +157,8 @@ nav a.active {
     display: none; /* Oculta el botón de escritorio en móvil */
   }
   #theme-toggle-mobile {
-    display: block; /* Muestra el botón de móvil (dentro del nav) */
+    position: relative;
+    z-index: 10; /* Asegura que quede encima de la burbuja */
   }
 }
 
@@ -1357,5 +1358,14 @@ footer {
     right: 1rem;
     width: calc(100% - 2rem);
     height: 70vh;
+  }
+}
+
+@media (max-width: 995px) {
+  #theme-toggle-desktop {
+    display: none !important;
+  }
+  #theme-toggle-mobile {
+    display: block !important;
   }
 }
